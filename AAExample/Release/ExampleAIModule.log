@@ -1,0 +1,32 @@
+﻿Build started 05/06/2017 00:00:30.
+     1>Project "C:\Users\Gedson Melo\Desktop\Arquivos AA\Starcarft\AAExample\AAExample\ExampleAIModule.vcxproj" on node 2 (Build target(s)).
+     1>ClCompile:
+         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\CL.exe /c /I"C:\Program Files (x86)\BWAPI\include" /Zi /nologo /W3 /WX- /MP /O2 /Oi /Oy- /GL /D NOMINMAX /D WIN32 /D NDEBUG /D _WINDOWS /D _USRDLL /D EXAMPLEAIMODULE_EXPORTS /D _WINDLL /Gm- /EHsc /MD /GS /Gy /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Release\\" /Fd"Release\vc120.pdb" /Gd /TP /analyze- /errorReport:prompt Source\AAExample.cpp Source\Dll.cpp Source\Hatchery.cpp Source\MineralManager.cpp Source\Overlord.cpp Source\SpawningPool.cpp Source\Utilitarios.cpp Source\ZergDrone.cpp Source\Zergling.cpp
+         AAExample.cpp
+         Dll.cpp
+         Hatchery.cpp
+         MineralManager.cpp
+         Overlord.cpp
+         SpawningPool.cpp
+         Utilitarios.cpp
+         ZergDrone.cpp
+         Zergling.cpp
+       Link:
+         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"C:\Users\Gedson Melo\Desktop\Arquivos AA\Starcarft\AAExample\..\bwapi-data\AAExample.dll" /INCREMENTAL:NO /NOLOGO "C:\Program Files (x86)\BWAPI\lib\BWAPI.lib" kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"C:\Users\Gedson Melo\Desktop\Arquivos AA\Starcarft\AAExample\..\bwapi-data\AAExample.pdb" /SUBSYSTEM:WINDOWS /OPT:REF /OPT:ICF /LTCG /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"Release\AAExample.lib" /MACHINE:X86 /SAFESEH /DLL Release\Dll.obj
+         Release\AAExample.obj
+         Release\Hatchery.obj
+         Release\MineralManager.obj
+         Release\Overlord.obj
+         Release\SpawningPool.obj
+         Release\Utilitarios.obj
+         Release\ZergDrone.obj
+         Release\Zergling.obj
+            Creating library Release\AAExample.lib and object Release\AAExample.exp
+         Generating code
+         Finished generating code
+         ExampleAIModule.vcxproj -> C:\Users\Gedson Melo\Desktop\Arquivos AA\Starcarft\AAExample\..\bwapi-data\AAExample.dll
+     1>Done Building Project "C:\Users\Gedson Melo\Desktop\Arquivos AA\Starcarft\AAExample\AAExample\ExampleAIModule.vcxproj" (Build target(s)).
+
+Build succeeded.
+
+Time Elapsed 00:00:13.34

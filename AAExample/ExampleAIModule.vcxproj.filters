@@ -1,0 +1,69 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="Source\Dll.cpp" />
+    <ClCompile Include="Source\AAExample.cpp" />
+    <ClCompile Include="Source\Hatchery.cpp">
+      <Filter>Units</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\ZergDrone.cpp">
+      <Filter>Units</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Zergling.cpp">
+      <Filter>Units</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\SpawningPool.cpp">
+      <Filter>Units</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Overlord.cpp">
+      <Filter>Units</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\MineralManager.cpp">
+      <Filter>Utils</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Utilitarios.cpp">
+      <Filter>Utils</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Source\AAExample.h" />
+    <ClInclude Include="Source\Hatchery.h">
+      <Filter>Units\Header</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\ZergDrone.h">
+      <Filter>Units\Header</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Units.h">
+      <Filter>Units\Header</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Zergling.h">
+      <Filter>Units\Header</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\SpawningPool.h">
+      <Filter>Units\Header</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Overlord.h">
+      <Filter>Units\Header</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\MineralManager.h">
+      <Filter>Utils\Header</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Utilitarios.h">
+      <Filter>Utils\Header</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="Utils">
+      <UniqueIdentifier>{5c66f44d-20a8-421b-b259-76dec70ca047}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Utils\Header">
+      <UniqueIdentifier>{64e19b8f-ebcb-4aaa-ada9-3e69033a10da}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Units">
+      <UniqueIdentifier>{54fe5147-69bb-4206-b355-cd32b5f1f143}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Units\Header">
+      <UniqueIdentifier>{9e2bb9a0-3690-4eec-8b0f-b10db8bf3f30}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>
