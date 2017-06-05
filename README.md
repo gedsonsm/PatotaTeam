@@ -1,0 +1,2 @@
+# PatotaTeam
+IA para Starcraft
