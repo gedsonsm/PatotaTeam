@@ -28,7 +28,7 @@ public:
 	std::atomic<bool> construindoPool;
 	std::atomic<bool> construirPool;
 	std::atomic<bool> subistituiDronePool;
-	//Contadores de unidades
+	std::atomic<bool> treinandoOverlord;
 	std::atomic<int> qtdLarva;
 	std::atomic<int> qtdZergling;
 	std::atomic<int> qtdDrone;

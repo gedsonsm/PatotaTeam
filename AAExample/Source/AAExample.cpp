@@ -182,6 +182,7 @@ void AAExample::onUnitMorph(BWAPI::Unit unit)
 		else if (unit->getType() == UnitTypes::Zerg_Overlord) 
 		{
 			new Overlord(unit);
+			util->treinandoOverlord = false;
 		}
 	}
 	

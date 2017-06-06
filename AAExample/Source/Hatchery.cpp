@@ -36,11 +36,12 @@ DWORD WINAPI Hatchery::run(LPVOID param){
 		{
 			if (hq->isIdle())
 			{
-				if (self->supplyUsed() >= self->supplyTotal())
+				if (self->supplyUsed() >= self->supplyTotal() && !util->treinandoOverlord)
 				{
 					if (self->incompleteUnitCount(overlord) == 0 && util->qtdLarva > 0 && self->minerals() >= overlord.mineralPrice()) 
 					{
 						hq->train(overlord);
+						util->treinandoOverlord = true;
 					}
 				}
 				else if (((util->qtdDrone < MIN_DRONES || (util->qtdZergling > MAX_ZERGLING && util->qtdDrone < MAX_DRONES)) && util->qtdLarva > 0 && self->minerals() >= drone.mineralPrice()) || util->subistituiDronePool)
