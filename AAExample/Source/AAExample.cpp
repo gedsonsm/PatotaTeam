@@ -18,6 +18,7 @@ void AAExample::onStart()
 	if (Broodwar->enemy()) // First make sure there is an enemy AA: Make sure to check EVERYTHING.
 		Broodwar << "The matchup is " << Broodwar->self()->getRace() << " vs " << Broodwar->enemy()->getRace() << std::endl;
 
+	new Ataque();
 }
 
 // For the hardcore ones, you can use Thread Pool closing it at onEnd.
@@ -169,6 +170,11 @@ void AAExample::onUnitMorph(BWAPI::Unit unit)
 		else if (unit->getType() == UnitTypes::Zerg_Zergling) 
 		{
 			new Zergling(unit);
+			if (util->atacador)
+				util->grupoAtaque.insert(unit);
+			else
+				util->grupoDefesa.insert(unit);
+
 			util->qtdZergling++;
 		} else if (unit->getType() == UnitTypes::Zerg_Spawning_Pool) 
 		{

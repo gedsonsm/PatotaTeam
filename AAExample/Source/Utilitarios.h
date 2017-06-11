@@ -29,16 +29,22 @@ public:
 	std::atomic<bool> construirPool;
 	std::atomic<bool> subistituiDronePool;
 	std::atomic<bool> treinandoOverlord;
+	std::atomic<bool> atacador;
+	std::atomic<bool> atacar;
 	std::atomic<int> qtdLarva;
 	std::atomic<int> qtdZergling;
 	std::atomic<int> qtdDrone;
 	
 	HANDLE ghMutex;
 	static Utilitarios* getInstance();
+	BWAPI::Position localInimigo;
+	BWAPI::Unitset grupoAtaque;
+	BWAPI::Unitset grupoDefesa;
 
 private:
 	~Utilitarios();
 	Utilitarios();
 	static Utilitarios* instance;
+	Position Utilitarios::getBaseInimiga();
 };
 

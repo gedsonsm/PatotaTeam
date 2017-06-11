@@ -13,9 +13,13 @@ Utilitarios::Utilitarios()
 	construirPool = false;
 	subistituiDronePool = false;
 	treinandoOverlord = false;
+	atacador = false;
+	atacar = false;
 	qtdLarva = 0;
 	qtdZergling = 0;
 	qtdDrone = 0;
+
+	localInimigo = getBaseInimiga();
 
 	// Create a mutex with no initial owner
 	ghMutex = CreateMutex(
@@ -34,4 +38,19 @@ Utilitarios* Utilitarios::getInstance() {
 		instance = new Utilitarios();
 	}
 	return instance;
+}
+
+Position Utilitarios::getBaseInimiga()
+{
+	TilePosition::list bases = Broodwar->getStartLocations();
+	if (bases.size() > 2) {
+		return (Position)Broodwar->self()->getStartLocation();
+	}
+	else {
+		for each (TilePosition p in bases)
+		{
+			if (p != Broodwar->self()->getStartLocation())
+				return (Position)p;
+		}
+	}
 }

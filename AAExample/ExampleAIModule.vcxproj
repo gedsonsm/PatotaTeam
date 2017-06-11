@@ -97,6 +97,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Source\Ataque.cpp" />
     <ClCompile Include="Source\Dll.cpp" />
     <ClCompile Include="Source\AAExample.cpp" />
     <ClCompile Include="Source\Hatchery.cpp" />
@@ -108,7 +109,9 @@
     <ClCompile Include="Source\Zergling.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Ataque.h" />
     <ClInclude Include="Source\AAExample.h" />
+    <ClInclude Include="Source\Ataque.h" />
     <ClInclude Include="Source\Hatchery.h" />
     <ClInclude Include="Source\MineralManager.h" />
     <ClInclude Include="Source\Overlord.h" />

@@ -24,6 +24,9 @@
     <ClCompile Include="Source\Utilitarios.cpp">
       <Filter>Utils</Filter>
     </ClCompile>
+    <ClCompile Include="Source\Ataque.cpp">
+      <Filter>Utils</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\AAExample.h" />
@@ -49,6 +52,12 @@
       <Filter>Utils\Header</Filter>
     </ClInclude>
     <ClInclude Include="Source\Utilitarios.h">
+      <Filter>Utils\Header</Filter>
+    </ClInclude>
+    <ClInclude Include="Ataque.h">
+      <Filter>Utils\Header</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Ataque.h">
       <Filter>Utils\Header</Filter>
     </ClInclude>
   </ItemGroup>
