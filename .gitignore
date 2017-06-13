@@ -3,3 +3,12 @@ AAExample.sdf
 AAExample.v12.suo
 *.sdf
 *.suo
+*.obj
+*.log
+*.tlog
+*.lastbuildstate
+*.lib
+*.exp
+*.suo
+*.sdf
+*.pdb
