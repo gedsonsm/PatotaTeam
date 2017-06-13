@@ -35,7 +35,7 @@ DWORD WINAPI Zergling::run(LPVOID param){
 
 		if (dwWaitResult == WAIT_OBJECT_0 || dwWaitResult == WAIT_ABANDONED) //RAII
 		{
-			if (unit->getDistance((Position)self->getStartLocation()) > 50 && !unit->isMoving()) 
+			if (unit->getDistance((Position)self->getStartLocation()) > 50 && !unit->isMoving() && !util->atacar) 
 			{
 				unit->move((Position)self->getStartLocation());
 			}

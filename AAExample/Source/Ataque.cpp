@@ -54,7 +54,7 @@ DWORD WINAPI Ataque::run(LPVOID param)
 				util->grupoAtaque.move((Position)self->getStartLocation());
 				util->atacar = false;
 			}
-			else 
+			else if (util->qtdZergling >= MAX_ZERGLING)
 			{
 				util->atacar = true;
 				for each (Unit u in todosInimigos)
@@ -80,7 +80,6 @@ DWORD WINAPI Ataque::run(LPVOID param)
 					
 				}
 			}
-
 
 			if (!ReleaseMutex(util->ghMutex))
 			{

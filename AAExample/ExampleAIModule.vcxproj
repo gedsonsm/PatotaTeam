@@ -109,7 +109,6 @@
     <ClCompile Include="Source\Zergling.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Ataque.h" />
     <ClInclude Include="Source\AAExample.h" />
     <ClInclude Include="Source\Ataque.h" />
     <ClInclude Include="Source\Hatchery.h" />

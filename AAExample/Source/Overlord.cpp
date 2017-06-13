@@ -47,11 +47,6 @@ DWORD WINAPI Overlord::run(LPVOID param)
 			{
 				// Handle error.
 			}
-
-			if (!ReleaseMutex(util->ghMutex))
-			{
-				// Handle error.
-			}
 		}
 		Sleep(30);
 	}

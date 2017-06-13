@@ -27,7 +27,7 @@ public:
 	std::atomic<bool> temPool;
 	std::atomic<bool> construindoPool;
 	std::atomic<bool> construirPool;
-	std::atomic<bool> subistituiDronePool;
+	std::atomic<bool> subistituiDronePool; ///consertar
 	std::atomic<bool> treinandoOverlord;
 	std::atomic<bool> atacador;
 	std::atomic<bool> atacar;

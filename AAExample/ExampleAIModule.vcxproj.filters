@@ -54,9 +54,6 @@
     <ClInclude Include="Source\Utilitarios.h">
       <Filter>Utils\Header</Filter>
     </ClInclude>
-    <ClInclude Include="Ataque.h">
-      <Filter>Utils\Header</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Ataque.h">
       <Filter>Utils\Header</Filter>
     </ClInclude>

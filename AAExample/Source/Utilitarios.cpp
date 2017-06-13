@@ -13,7 +13,7 @@ Utilitarios::Utilitarios()
 	construirPool = false;
 	subistituiDronePool = false;
 	treinandoOverlord = false;
-	atacador = false;
+	atacador = true;
 	atacar = false;
 	qtdLarva = 0;
 	qtdZergling = 0;

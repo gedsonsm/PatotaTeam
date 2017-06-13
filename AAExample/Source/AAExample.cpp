@@ -108,7 +108,7 @@ void AAExample::onUnitCreate(BWAPI::Unit unit)
 {
 	if (unit->getPlayer() == Broodwar->self())
 	{
-		if (unit->getType().isWorker()) 
+		if (unit->getType() == UnitTypes::Zerg_Drone)
 		{
 			new ZergDrone(unit);
 			util->qtdDrone++;
