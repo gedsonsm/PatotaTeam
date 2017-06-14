@@ -18,51 +18,51 @@ DWORD WINAPI Zergling::run(LPVOID param){
 	bool defenseSquad = false;
 	bool attackSquad = false;
 
-	if (Utils->rush && Utils->qtdDefensores < MAX_DEFENSORES) {
+	if (util->rush && util->qtdDefensores < MAX_DEFENSORES) {
 		defenseSquad = true;
-		Utils->qtdDefensores++;
+		util->qtdDefensores++;
 	}
 	else {
-		Utils->grupoAtaque.insert(unit);
+		util->grupoAtaque.insert(unit);
 		attackSquad = true;
 	}
 
 	while (true){
 		dwWaitResult = WaitForSingleObject(
-			Utils->ghMutex,    // handle to mutex
+			util->ghMutex,    // handle to mutex
 			100);  // time-out interval
 
 		//// If end game, or if it exists (remember to always check)
-		if (Utils->GameOver || unit == NULL || !unit->exists())  {
+		if (util->GameOver || unit == NULL || !unit->exists())  {
 			if (defenseSquad) {
-				Utils->qtdDefensores--;
+				util->qtdDefensores--;
 			}
-			ReleaseMutex(Utils->ghMutex);
+			ReleaseMutex(util->ghMutex);
 			return 0; // end thread
 		} // end thread
 		// You can check tons of others things like isStuck, isLockedDown, constructing
 		if (!unit->isCompleted() || !unit->isCompleted()){ // You can create it on the onUnitComplete too!
-			ReleaseMutex(Utils->ghMutex);
+			ReleaseMutex(util->ghMutex);
 			Sleep(500);
 			continue;
 		}
 
 		// You can check tons of others things like isStuck, isLockedDown, constructing
-		if (attackSquad && Utils->rush){ // You can create it on the onUnitComplete too!
-			ReleaseMutex(Utils->ghMutex);
+		if (attackSquad && util->rush){ // You can create it on the onUnitComplete too!
+			ReleaseMutex(util->ghMutex);
 			Sleep(500);
 			continue;
 		}
 
 		if (dwWaitResult == WAIT_OBJECT_0 || dwWaitResult == WAIT_ABANDONED) //RAII
 		{
-			if(defenseSquad && !Utils->rush) {
-				Utils->grupoAtaque.insert(unit);
+			if(defenseSquad && !util->rush) {
+				util->grupoAtaque.insert(unit);
 				attackSquad = true;
-				Utils->qtdDefensores--;
+				util->qtdDefensores--;
 				defenseSquad = false;
-			} else if (defenseSquad || (attackSquad && !Utils->rush)) {
-				target = Utils->getAlvoDefesa(unit);
+			} else if (defenseSquad || (attackSquad && !util->rush)) {
+				target = util->getAlvoDefesa(unit);
 				if (target != nullptr && target != lastTarget) {
 					unit->attack(target);
 					lastTarget = target;
@@ -72,7 +72,7 @@ DWORD WINAPI Zergling::run(LPVOID param){
 				}
 			}
 
-			if (!ReleaseMutex(Utils->ghMutex))
+			if (!ReleaseMutex(util->ghMutex))
 			{
 				// Handle error.
 			}

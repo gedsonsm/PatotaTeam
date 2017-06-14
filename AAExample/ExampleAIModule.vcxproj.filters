@@ -3,9 +3,6 @@
   <ItemGroup>
     <ClCompile Include="Source\Dll.cpp" />
     <ClCompile Include="Source\AAExample.cpp" />
-    <ClCompile Include="Source\Util.cpp">
-      <Filter>Utils</Filter>
-    </ClCompile>
     <ClCompile Include="Source\Hatchery.cpp">
       <Filter>Units</Filter>
     </ClCompile>
@@ -21,18 +18,18 @@
     <ClCompile Include="Source\Overlord.cpp">
       <Filter>Units</Filter>
     </ClCompile>
-    <ClCompile Include="Source\AttackSquad.cpp">
+    <ClCompile Include="Source\GerenciadorAtaque.cpp">
       <Filter>Squads</Filter>
     </ClCompile>
-    <ClCompile Include="Source\MineralManager.cpp">
+    <ClCompile Include="Source\GerenciadorColeta.cpp">
+      <Filter>Utils</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Utilitarios.cpp">
       <Filter>Utils</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\AAExample.h" />
-    <ClInclude Include="Source\Util.h">
-      <Filter>Utils\Header</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Hatchery.h">
       <Filter>Units\Header</Filter>
     </ClInclude>
@@ -48,10 +45,13 @@
     <ClInclude Include="Source\Overlord.h">
       <Filter>Units\Header</Filter>
     </ClInclude>
-    <ClInclude Include="Source\AttackSquad.h">
+    <ClInclude Include="Source\GerenciadorAtaque.h">
       <Filter>Squads\Header</Filter>
     </ClInclude>
-    <ClInclude Include="Source\MineralManager.h">
+    <ClInclude Include="Source\GerenciadorColeta.h">
+      <Filter>Utils\Header</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Utilitarios.h">
       <Filter>Utils\Header</Filter>
     </ClInclude>
   </ItemGroup>

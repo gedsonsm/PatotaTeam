@@ -24,37 +24,37 @@ DWORD WINAPI ZergDrone::run(LPVOID param){
 	while (true){
 
 		dwWaitResult = WaitForSingleObject(
-			Utils->ghMutex,    // handle to mutex
+			util->ghMutex,    // handle to mutex
 			100);  // time-out interval
 
 		//// If end game, or if it exists (remember to always check)
-		if (Utils->GameOver || unit == NULL || !unit->exists())  {
-			ReleaseMutex(Utils->ghMutex);
+		if (util->GameOver || unit == NULL || !unit->exists())  {
+			ReleaseMutex(util->ghMutex);
 			return 0; // end thread
 		} // end thread
 		// You can check tons of others things like isStuck, isLockedDown, constructing
 		if (!unit->isCompleted() || !unit->isCompleted()){ // You can create it on the onUnitComplete too!
-			ReleaseMutex(Utils->ghMutex);
+			ReleaseMutex(util->ghMutex);
 			Sleep(500);
 			continue;
 		}
 
 		if (dwWaitResult == WAIT_OBJECT_0 || dwWaitResult == WAIT_ABANDONED) //RAII
 		{
-			if (Utils->construirPool && !Utils->construindoPool) {
+			if (util->construirPool && !util->construindoPool) {
 				TilePosition targetBuildLocation = Broodwar->getBuildLocation(UnitTypes::Zerg_Spawning_Pool, unit->getTilePosition());
 				if (targetBuildLocation)
 				{
 					unit->build(UnitTypes::Zerg_Spawning_Pool, targetBuildLocation);
-					Utils->construirPool = false;
-					Utils->construindoPool = true;
-					Utils->subistituiDronePool = true;
+					util->construirPool = false;
+					util->construindoPool = true;
+					util->substituiDrone = true;
 				}
-				ReleaseMutex(Utils->ghMutex);
+				ReleaseMutex(util->ghMutex);
 				return 0;
 			}
 
-			unitTarget = Utils->getAlvoDefesa(unit);
+			unitTarget = util->getAlvoDefesa(unit);
 			if (unitTarget != nullptr) {
 				if (unit->isCarryingMinerals()) {
 					returningCargo = false;
@@ -116,7 +116,7 @@ DWORD WINAPI ZergDrone::run(LPVOID param){
 				}
 			} // closure: has no powerup
 			
-			if (!ReleaseMutex(Utils->ghMutex))
+			if (!ReleaseMutex(util->ghMutex))
 			{
 				// Handle error.
 			}

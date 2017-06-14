@@ -19,11 +19,11 @@ DWORD WINAPI SpawningPool::run(LPVOID param){
 	while (true){
 
 		dwWaitResult = WaitForSingleObject(
-			Utils->ghMutex,    // handle to mutex
+			util->ghMutex,    // handle to mutex
 			100);  // time-out interval
 
-		if (Utils->GameOver || hq == NULL || !hq->exists()) {
-			ReleaseMutex(Utils->ghMutex);
+		if (util->GameOver || hq == NULL || !hq->exists()) {
+			ReleaseMutex(util->ghMutex);
 			return 0; // end thread
 		}
 		
@@ -31,10 +31,10 @@ DWORD WINAPI SpawningPool::run(LPVOID param){
 		{
 			
 			if (hq->isCompleted()) {
-				Utils->construindoPool = false;
-				Utils->temPool = true;
+				util->construindoPool = false;
+				util->temPool = true;
 				// Release ownership of the mutex object
-				if (!ReleaseMutex(Utils->ghMutex))
+				if (!ReleaseMutex(util->ghMutex))
 				{
 					// Handle error.
 				}
@@ -42,7 +42,7 @@ DWORD WINAPI SpawningPool::run(LPVOID param){
 			}
 
 			// Release ownership of the mutex object
-			if (!ReleaseMutex(Utils->ghMutex))
+			if (!ReleaseMutex(util->ghMutex))
 			{
 				// Handle error.
 			}

@@ -23,27 +23,27 @@ DWORD WINAPI Overlord::run(LPVOID param){
 
 	while (true){
 		dwWaitResult = WaitForSingleObject(
-			Utils->ghMutex,    // handle to mutex
+			util->ghMutex,    // handle to mutex
 			100);  // time-out interval
 
 		//// If end game, or if it exists (remember to always check)
-		if (Utils->GameOver || unit == NULL || !unit->exists())  {
-			ReleaseMutex(Utils->ghMutex);
+		if (util->GameOver || unit == NULL || !unit->exists())  {
+			ReleaseMutex(util->ghMutex);
 			return 0; // end thread
 		} // end thread
 		// You can check tons of others things like isStuck, isLockedDown, constructing
 		if (!unit->isCompleted() || !unit->isCompleted()){ // You can create it on the onUnitComplete too!
-			ReleaseMutex(Utils->ghMutex);
+			ReleaseMutex(util->ghMutex);
 			Sleep(500);
 			continue;
 		}
 
 		if (dwWaitResult == WAIT_OBJECT_0 || dwWaitResult == WAIT_ABANDONED) //RAII
 		{
-			if (!Utils->startScout) {
-				Utils->startScout = true;
+			if (!util->startScout) {
+				util->startScout = true;
 
-				if (Utils->baseInimigo == (Position)self->getStartLocation() && bases.size() > 2) {
+				if (util->baseInimigo == (Position)self->getStartLocation() && bases.size() > 2) {
 					for each (TilePosition p in bases)
 					{
 						if (p != Broodwar->self()->getStartLocation())
@@ -67,13 +67,13 @@ DWORD WINAPI Overlord::run(LPVOID param){
 						}
 					}
 
-					Utils->baseInimigo = base;
+					util->baseInimigo = base;
 					unit->move((Position)self->getStartLocation());
 					scouting = false;
 				}
 			}
 
-			if (!ReleaseMutex(Utils->ghMutex))
+			if (!ReleaseMutex(util->ghMutex))
 			{
 				// Handle error.
 			}

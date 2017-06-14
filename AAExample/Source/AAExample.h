@@ -6,8 +6,8 @@
 #include "ZergDrone.h"
 #include "Zergling.h"
 #include "Overlord.h"
-#include "AttackSquad.h"
-#include "Util.h"
+#include "GerenciadorAtaque.h"
+#include "Utilitarios.h"
 
 // Remember not to use "Broodwar" in any global class constructor!
 

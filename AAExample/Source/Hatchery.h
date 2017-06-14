@@ -1,6 +1,6 @@
 #include "BWAPI.h"
 #include <Windows.h>
-#include "Util.h"
+#include "Utilitarios.h"
 
 using namespace BWAPI;
 using namespace Filter;
