@@ -97,26 +97,25 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Source\Ataque.cpp" />
+    <ClCompile Include="Source\AttackSquad.cpp" />
     <ClCompile Include="Source\Dll.cpp" />
     <ClCompile Include="Source\AAExample.cpp" />
     <ClCompile Include="Source\Hatchery.cpp" />
     <ClCompile Include="Source\MineralManager.cpp" />
     <ClCompile Include="Source\Overlord.cpp" />
     <ClCompile Include="Source\SpawningPool.cpp" />
-    <ClCompile Include="Source\Utilitarios.cpp" />
+    <ClCompile Include="Source\Util.cpp" />
     <ClCompile Include="Source\ZergDrone.cpp" />
     <ClCompile Include="Source\Zergling.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\AAExample.h" />
-    <ClInclude Include="Source\Ataque.h" />
+    <ClInclude Include="Source\AttackSquad.h" />
     <ClInclude Include="Source\Hatchery.h" />
     <ClInclude Include="Source\MineralManager.h" />
     <ClInclude Include="Source\Overlord.h" />
     <ClInclude Include="Source\SpawningPool.h" />
-    <ClInclude Include="Source\Units.h" />
-    <ClInclude Include="Source\Utilitarios.h" />
+    <ClInclude Include="Source\Util.h" />
     <ClInclude Include="Source\ZergDrone.h" />
     <ClInclude Include="Source\Zergling.h" />
   </ItemGroup>

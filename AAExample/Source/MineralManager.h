@@ -1,9 +1,9 @@
-#include "Utilitarios.h"
+#include "Util.h"
 
 //Defines
 #define GATHER_TIME 600
 
-#define Mineral MineralManager::getInstance()
+#define Mineral MineralManager::getInstancia()
 #define MineralQueue std::set<BWAPI::Unit, MineralManager::CompareDistance> 
 
 #pragma once
@@ -19,7 +19,7 @@ public:
 
 	MineralQueue mineralList;
 
-	static MineralManager* getInstance();
+	static MineralManager* getInstancia();
 
 	BWAPI::Unit getMineralField(BWAPI::Unit);
 	void leaveQueue(BWAPI::Unit);

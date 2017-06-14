@@ -13,46 +13,63 @@ ZergDrone::~ZergDrone()
 
 DWORD WINAPI ZergDrone::run(LPVOID param){
 	BWAPI::Unit unit = static_cast<BWAPI::Unit>(param);
-
 	DWORD dwWaitResult;
 	Unit target = nullptr;
 	bool returningCargo = true;
 	bool isGathering = false;
 
+	Unit lastUnitTarget = nullptr;
+	Unit unitTarget;
+
 	while (true){
 
 		dwWaitResult = WaitForSingleObject(
-			util->ghMutex,    // handle to mutex
+			Utils->ghMutex,    // handle to mutex
 			100);  // time-out interval
 
 		//// If end game, or if it exists (remember to always check)
-		if (util->GameOver || unit == NULL || !unit->exists())  {
-			ReleaseMutex(util->ghMutex);
+		if (Utils->GameOver || unit == NULL || !unit->exists())  {
+			ReleaseMutex(Utils->ghMutex);
 			return 0; // end thread
 		} // end thread
 		// You can check tons of others things like isStuck, isLockedDown, constructing
 		if (!unit->isCompleted() || !unit->isCompleted()){ // You can create it on the onUnitComplete too!
-			ReleaseMutex(util->ghMutex);
+			ReleaseMutex(Utils->ghMutex);
 			Sleep(500);
 			continue;
 		}
 
 		if (dwWaitResult == WAIT_OBJECT_0 || dwWaitResult == WAIT_ABANDONED) //RAII
 		{
-			if (util->construirPool && !util->construindoPool) {
+			if (Utils->construirPool && !Utils->construindoPool) {
 				TilePosition targetBuildLocation = Broodwar->getBuildLocation(UnitTypes::Zerg_Spawning_Pool, unit->getTilePosition());
 				if (targetBuildLocation)
 				{
 					unit->build(UnitTypes::Zerg_Spawning_Pool, targetBuildLocation);
-					util->construirPool = false;
-					util->construindoPool = true;
-					util->subistituiDronePool = true;
+					Utils->construirPool = false;
+					Utils->construindoPool = true;
+					Utils->subistituiDronePool = true;
 				}
-				ReleaseMutex(util->ghMutex);
+				ReleaseMutex(Utils->ghMutex);
 				return 0;
 			}
 
-			if (unit->isCarryingGas() || unit->isCarryingMinerals())
+			unitTarget = Utils->getAlvoDefesa(unit);
+			if (unitTarget != nullptr) {
+				if (unit->isCarryingMinerals()) {
+					returningCargo = false;
+					isGathering = false;
+				}
+				else {
+					returningCargo = true;
+					isGathering = false;
+				}
+				if (unitTarget != lastUnitTarget) {
+					unit->attack(unitTarget);
+					lastUnitTarget = unitTarget;
+				}
+			} 
+			else if (unit->isCarryingGas() || unit->isCarryingMinerals())
 			{
 				isGathering = false;
 				
@@ -66,7 +83,6 @@ DWORD WINAPI ZergDrone::run(LPVOID param){
 			}
 			else if (!unit->getPowerUp())
 			{
-				// Verifica se já possui um campo de minério
 				if (returningCargo) {
 					target = Mineral->getMineralField(unit);
 					returningCargo = false;
@@ -89,6 +105,7 @@ DWORD WINAPI ZergDrone::run(LPVOID param){
 								}
 							}
 						}
+
 					}
 					else {
 						returningCargo = true;
@@ -99,7 +116,7 @@ DWORD WINAPI ZergDrone::run(LPVOID param){
 				}
 			} // closure: has no powerup
 			
-			if (!ReleaseMutex(util->ghMutex))
+			if (!ReleaseMutex(Utils->ghMutex))
 			{
 				// Handle error.
 			}

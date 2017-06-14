@@ -1,14 +1,13 @@
 #pragma once
 #include <BWAPI.h>
-//Units fixas
 #include "Hatchery.h"
 #include "SpawningPool.h"
 
-//Units Móveis
 #include "ZergDrone.h"
 #include "Zergling.h"
 #include "Overlord.h"
-#include "Ataque.h"
+#include "AttackSquad.h"
+#include "Util.h"
 
 // Remember not to use "Broodwar" in any global class constructor!
 

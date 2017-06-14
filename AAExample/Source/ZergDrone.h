@@ -1,6 +1,6 @@
 #include "BWAPI.h"
 #include <Windows.h>
-#include "Utilitarios.h"
+#include "Util.h"
 #include "MineralManager.h"
 
 using namespace BWAPI;

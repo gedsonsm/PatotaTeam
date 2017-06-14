@@ -7,7 +7,7 @@ using namespace Filter;
 void AAExample::onStart()
 {
 	// Hello World!
-	Broodwar->sendText("PatotaTeam");
+	Broodwar->sendText("");
 
 	// Set the command optimization level so that common commands can be grouped
 	// and reduce the bot's APM (Actions Per Minute).
@@ -18,7 +18,8 @@ void AAExample::onStart()
 	if (Broodwar->enemy()) // First make sure there is an enemy AA: Make sure to check EVERYTHING.
 		Broodwar << "The matchup is " << Broodwar->self()->getRace() << " vs " << Broodwar->enemy()->getRace() << std::endl;
 
-	new Ataque();
+	new AttackSquad();
+
 }
 
 // For the hardcore ones, you can use Thread Pool closing it at onEnd.
@@ -26,7 +27,7 @@ void AAExample::onEnd(bool isWinner)
 {
 	//Broodwar << "onEnd:: " << isWinner << std::endl;
 	// Called when the game ends
-	util->GameOver = true;
+	Utils->GameOver = true;
 	if (isWinner)
 	{
 		// AA: Do whatever you want, but make sure to not break anything.
@@ -47,6 +48,7 @@ void AAExample::onFrame()
 	// Display the game frame rate as text in the upper left area of the screen
 	//Broodwar->drawTextScreen(200, 0, "FPS: %d", Broodwar->getFPS());
 	//Broodwar->drawTextScreen(200, 20, "Average FPS: %f", Broodwar->getAverageFPS());
+	Broodwar->drawTextScreen(100, 20, "PatotaTeam");
 
 }
 
@@ -106,28 +108,23 @@ void AAExample::onUnitHide(BWAPI::Unit unit)
 
 void AAExample::onUnitCreate(BWAPI::Unit unit)
 {
-	if (unit->getPlayer() == Broodwar->self())
-	{
-		if (unit->getType() == UnitTypes::Zerg_Drone)
-		{
+	//Broodwar << "onUnitCreate: " << unit->getType() << std::endl;
+	if (unit->getPlayer() == Broodwar->self()){
+		if (unit->getType().isWorker()) {
 			new ZergDrone(unit);
-			util->qtdDrone++;
+			Utils->qtdDrone++;
 		}
-		else if (unit->getType() == UnitTypes::Zerg_Hatchery) 
-		{
+		else if (unit->getType() == UnitTypes::Zerg_Hatchery) {//unit->getType().isResourceDepot()) {
 			new Hatchery(unit);
 		}
-		else if (unit->getType() == UnitTypes::Zerg_Zergling) 
-		{
+		else if (unit->getType() == UnitTypes::Zerg_Zergling) {
 			new Zergling(unit);
-			util->qtdZergling++;
+			Utils->qtdZergling++;
 		}
-		else if (unit->getType() == UnitTypes::Zerg_Larva)
-		{
-			util->qtdLarva++;
+		else if (unit->getType() == UnitTypes::Zerg_Larva){
+			Utils->qtdLarva++;
 		}
-		else if (unit->getType() == UnitTypes::Zerg_Overlord) 
-		{
+		else if (unit->getType() == UnitTypes::Zerg_Overlord) {
 			new Overlord(unit);
 		}
 	}
@@ -136,59 +133,42 @@ void AAExample::onUnitCreate(BWAPI::Unit unit)
 
 void AAExample::onUnitDestroy(BWAPI::Unit unit)
 {
-	if (unit->getPlayer() == Broodwar->self()) 
-	{
-		if (unit->getType().isWorker()) 
-		{
-			util->qtdDrone--;
+	if (unit->getPlayer() == Broodwar->self()) {
+		if (unit->getType().isWorker()) {
+			Utils->qtdDrone--;
 		}
-		else if (unit->getType() == UnitTypes::Zerg_Zergling) 
-		{
-			util->qtdZergling--;
+		else if (unit->getType() == UnitTypes::Zerg_Zergling) {
+			Utils->qtdZergling--;
 		}
-		else if (unit->getType() == UnitTypes::Zerg_Spawning_Pool) 
-		{
-			util->temPool = false;
-			util->construindoPool = false;
+		else if (unit->getType() == UnitTypes::Zerg_Spawning_Pool) {
+			Utils->temPool = false;
+			Utils->construindoPool = false;
 		}
-		else if (unit->getType() == UnitTypes::Zerg_Larva) 
-		{
-			util->qtdLarva--;
+		else if (unit->getType() == UnitTypes::Zerg_Larva) {
+			Utils->qtdLarva--;
 		}
 	}
 }
 
 void AAExample::onUnitMorph(BWAPI::Unit unit)
 {
-	if (unit->getPlayer() == Broodwar->self())
-	{
-		if (unit->getType().isWorker()) 
-		{
+	if (unit->getPlayer() == Broodwar->self()){
+		if (unit->getType().isWorker()) {
 			new ZergDrone(unit);
-			util->qtdDrone++;
+			Utils->qtdDrone++;
 		}
-		else if (unit->getType() == UnitTypes::Zerg_Zergling) 
-		{
+		else if (unit->getType() == UnitTypes::Zerg_Zergling) {
 			new Zergling(unit);
-			if (util->atacador)
-				util->grupoAtaque.insert(unit);
-			else
-				util->grupoDefesa.insert(unit);
-
-			util->qtdZergling++;
-		} else if (unit->getType() == UnitTypes::Zerg_Spawning_Pool) 
-		{
+			Utils->qtdZergling++;
+		} else if (unit->getType() == UnitTypes::Zerg_Spawning_Pool) {
 			new SpawningPool(unit);
-			util->qtdDrone--;
+			Utils->qtdDrone--; //Usa um drone para morphing
 		}
-		else if (unit->getType() == UnitTypes::Zerg_Egg)
-		{
-			util->qtdLarva--;
+		else if (unit->getType() == UnitTypes::Zerg_Egg){
+			Utils->qtdLarva--;
 		}
-		else if (unit->getType() == UnitTypes::Zerg_Overlord) 
-		{
+		else if (unit->getType() == UnitTypes::Zerg_Overlord) {
 			new Overlord(unit);
-			util->treinandoOverlord = false;
 		}
 	}
 	

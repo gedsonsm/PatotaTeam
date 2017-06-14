@@ -23,50 +23,40 @@ DWORD WINAPI Hatchery::run(LPVOID param){
 	while (true){
 
 		dwWaitResult = WaitForSingleObject(
-			util->ghMutex,    // handle to mutex
+			Utils->ghMutex,    // handle to mutex
 			100);  // time-out interval
 
-		if (util->GameOver || hq == NULL || !hq->exists()) {
-			ReleaseMutex(util->ghMutex);
+		if (Utils->GameOver || hq == NULL || !hq->exists()) {
+			ReleaseMutex(Utils->ghMutex);
 			return 0; // end thread
 		}
 		// Some things are commom between units, so you can apply a little of OO here.
 
 		if (dwWaitResult == WAIT_OBJECT_0 || dwWaitResult == WAIT_ABANDONED)
 		{
-			if (hq->isIdle())
-			{
-				if (self->supplyUsed() >= self->supplyTotal() && !util->treinandoOverlord)
-				{
-					if (self->incompleteUnitCount(overlord) == 0 && util->qtdLarva > 0 && self->minerals() >= overlord.mineralPrice()) 
-					{
+			if (hq->isIdle()){
+				if (self->supplyUsed() >= self->supplyTotal()){
+					if (self->incompleteUnitCount(overlord) == 0 && Utils->qtdLarva > 0 && self->minerals() >= overlord.mineralPrice()) {
 						hq->train(overlord);
-						util->treinandoOverlord = true;
 					}
 				}
-				else if (((util->qtdDrone < MIN_DRONES || (util->qtdZergling > MAX_ZERGLING && util->qtdDrone < MAX_DRONES)) && util->qtdLarva > 0 && self->minerals() >= drone.mineralPrice()) || util->subistituiDronePool)
-				{
+				else if ((Utils->qtdDrone < MIN_DRONES || (Utils->qtdZergling > MAX_ZERGLING && Utils->qtdDrone < MAX_DRONES) || Utils->subistituiDronePool) && Utils->qtdLarva > 0 && self->minerals() >= drone.mineralPrice()) {
 					hq->train(drone);
-					util->subistituiDronePool = false;
-				} 
-				else if (util->temPool) 
-				{
-					if (util->qtdLarva > 0 && self->minerals() >= zergling.mineralPrice()) 
-					{
+					Utils->subistituiDronePool = false;
+				} else if (Utils->temPool) {
+					if (Utils->qtdLarva > 0 && self->minerals() >= zergling.mineralPrice()) {
 						hq->train(zergling);
 					}
 				}
-				else if (self->incompleteUnitCount(UnitTypes::Zerg_Spawning_Pool) == 0) 
-				{
-					if (self->minerals() >= (spawningPool.mineralPrice() + drone.mineralPrice()) && !util->construirPool && !util->construindoPool)
-					{
-						util->construirPool = true;
+				else if (self->incompleteUnitCount(UnitTypes::Zerg_Spawning_Pool) == 0) {
+					if (self->minerals() >= (spawningPool.mineralPrice() + drone.mineralPrice()) && !Utils->construirPool && !Utils->construindoPool) {
+						Utils->construirPool = true;
 					}
 				}
 			}
 
 			// Release ownership of the mutex object
-			if (!ReleaseMutex(util->ghMutex))
+			if (!ReleaseMutex(Utils->ghMutex))
 			{
 				// Handle error.
 			}
