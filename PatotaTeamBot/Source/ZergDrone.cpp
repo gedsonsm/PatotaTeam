@@ -14,9 +14,9 @@ ZergDrone::~ZergDrone()
 DWORD WINAPI ZergDrone::run(LPVOID param){
 	BWAPI::Unit unit = static_cast<BWAPI::Unit>(param);
 	DWORD dwWaitResult;
-	Unit target = nullptr;
-	bool returningCargo = true;
-	bool isGathering = false;
+	Unit algo = nullptr;
+	bool devolverCarga = true;
+	bool estaColetanto = false;
 
 	Unit lastUnitTarget = nullptr;
 	Unit unitTarget;
@@ -41,78 +41,95 @@ DWORD WINAPI ZergDrone::run(LPVOID param){
 
 		if (dwWaitResult == WAIT_OBJECT_0 || dwWaitResult == WAIT_ABANDONED) //RAII
 		{
-			if (util->construirPool && !util->construindoPool) {
-				TilePosition targetBuildLocation = Broodwar->getBuildLocation(UnitTypes::Zerg_Spawning_Pool, unit->getTilePosition());
-				if (targetBuildLocation)
+			if (util->construirPool && !util->construindoPool)  // verifica se existe uma ordem para construir uma pool e uma já não está sendo construida
+			{
+				TilePosition localConstrucao = Broodwar->getBuildLocation(UnitTypes::Zerg_Spawning_Pool, unit->getTilePosition());
+				if (localConstrucao) //se tem um lugar pra costruie
 				{
-					unit->build(UnitTypes::Zerg_Spawning_Pool, targetBuildLocation);
+					unit->build(UnitTypes::Zerg_Spawning_Pool, localConstrucao);
 					util->construirPool = false;
 					util->construindoPool = true;
 					util->substituiDrone = true;
 				}
-				ReleaseMutex(util->ghMutex);
+				ReleaseMutex(util->ghMutex); //libera o mutex, pois o drone vai deixar de existir
 				return 0;
 			}
 
 			unitTarget = util->getAlvoDefesa(unit);
-			if (unitTarget != nullptr) {
-				if (unit->isCarryingMinerals()) {
-					returningCargo = false;
-					isGathering = false;
+			if (unitTarget != nullptr)  // se existe um algo que está atacando
+			{
+				if (unit->isCarryingMinerals()) // se estiver carregando material, vá devolver
+				{
+					devolverCarga = false;
+					estaColetanto = false;
 				}
-				else {
-					returningCargo = true;
-					isGathering = false;
+				else 
+				{
+					devolverCarga = true;
+					estaColetanto = false;
 				}
-				if (unitTarget != lastUnitTarget) {
+				if (unitTarget != lastUnitTarget) // ataca ate matar ou morrer
+				{
 					unit->attack(unitTarget);
 					lastUnitTarget = unitTarget;
 				}
 			} 
-			else if (unit->isCarryingGas() || unit->isCarryingMinerals())
+			else if (unit->isCarryingGas() || unit->isCarryingMinerals()) //se está carregando algo
 			{
-				isGathering = false;
+				estaColetanto = false; //para de coletar
 				
-				if (!returningCargo) {
+				if (!devolverCarga)  // devolve a carga
+				{
 					unit->returnCargo();
 
-					Mineral->leaveQueue(target);
-					target = nullptr;
-					returningCargo = true;
+					Mineral->leaveQueue(algo);
+					algo = nullptr;
+					devolverCarga = true;
 				}
 			}
-			else if (!unit->getPowerUp())
+			else if (!unit->getPowerUp()) //não sei porque, mas tive dificuldade de tirar esse if, deve ser algo da api
 			{
-				if (returningCargo) {
-					target = Mineral->getMineralField(unit);
-					returningCargo = false;
+				if (devolverCarga) //se já devolveu
+				{
+					algo = Mineral->getMineralField(unit); //pega um campo de minerio mais proximo
+					devolverCarga = false;
 				}
-				if (target != nullptr) {
-					if (target->exists())	{
-						if (unit->getOrderTarget() == NULL) {
-							if (!isGathering) {
-								isGathering = true;
-								if (!unit->gather(target)) {
+				if (algo != nullptr)  //se tem campo para coletar
+				{
+					if (algo->exists())// se existe o campo
+					{
+						if (unit->getOrderTarget() == NULL) // se nunca teve alvo pra coletar
+						{
+							if (!estaColetanto) //se já não está coletando 
+							{
+								estaColetanto = true;
+								if (!unit->gather(algo)) // começa a coletar
+								{
 									//handle error
 								}
 							}
 						}
-						else {
-							if (!isGathering || (unit->getOrderTarget() != target && unit->getOrderTarget()->getType().isMineralField())) {
-								isGathering = true;
-								if (!unit->gather(target)) {
+						else
+						{
+							// se não está coletando e volta a coletar
+							if (!estaColetanto || (unit->getOrderTarget() != algo && unit->getOrderTarget()->getType().isMineralField())) 
+							{
+								estaColetanto = true;
+								if (!unit->gather(algo))
+								{
 									//handle error
 								}
 							}
 						}
-
 					}
-					else {
-						returningCargo = true;
+					else // se o campo não existe mais, devolve a carga
+					{
+						devolverCarga = true;
 					}
 				}
-				else {
-					returningCargo = true;
+				else // se não tem campo, devolve a carga
+				{
+					devolverCarga = true;
 				}
 			} // closure: has no powerup
 			

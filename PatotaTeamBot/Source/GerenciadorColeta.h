@@ -28,7 +28,7 @@ private:
 	GerenciadorColeta();
 	~GerenciadorColeta();
 	std::atomic<int*> mineralQueueCount;
-	static GerenciadorColeta* instance;
+	static GerenciadorColeta* instanciaColeta;
 	MineralQueue getMineralFields();
 };
 

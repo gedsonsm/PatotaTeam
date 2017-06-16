@@ -3,7 +3,7 @@
 using namespace BWAPI;
 using namespace Filter;
 
-GerenciadorColeta* GerenciadorColeta::instance;
+GerenciadorColeta* GerenciadorColeta::instanciaColeta;
 
 bool GerenciadorColeta::CompareDistance::operator() (const BWAPI::Unit & p_lhs, const BWAPI::Unit & p_rhs)
 {
@@ -35,10 +35,10 @@ GerenciadorColeta::~GerenciadorColeta()
 }
 
 GerenciadorColeta* GerenciadorColeta::getInstancia() {
-	if (instance == NULL) {
-		instance = new GerenciadorColeta();
+	if (instanciaColeta == NULL) {
+		instanciaColeta = new GerenciadorColeta();
 	}
-	return instance;
+	return instanciaColeta;
 }
 
 BWAPI::Unit GerenciadorColeta::getMineralField(BWAPI::Unit unit) {

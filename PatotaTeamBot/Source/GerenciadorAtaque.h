@@ -12,10 +12,9 @@ public:
 	GerenciadorAtaque();
 	~GerenciadorAtaque();
 
-	std::list<BWAPI::Unit> lastAttackList;
-	bool isListTargetable(std::list<BWAPI::Unit> list);
-	int maxAttackZerglings(Unit u);
-	int getListMinZerglings(std::list<BWAPI::Unit> list);
+	std::list<BWAPI::Unit> ultimaListaAtaque;
+	bool listaSelecionavel(std::list<BWAPI::Unit> list);
+	int mixAtaqueZerglings(Unit u);
 
 private:
 	static DWORD WINAPI run(LPVOID param);

@@ -30,9 +30,10 @@ DWORD WINAPI SpawningPool::run(LPVOID param){
 		if (dwWaitResult == WAIT_OBJECT_0 || dwWaitResult == WAIT_ABANDONED)
 		{
 			
-			if (hq->isCompleted()) {
-				util->construindoPool = false;
-				util->temPool = true;
+			if (hq->isCompleted()) // se a pool está completa
+			{
+				util->construindoPool = false; //não está construindo mais
+				util->temPool = true; // e agora tem uma pool
 				// Release ownership of the mutex object
 				if (!ReleaseMutex(util->ghMutex))
 				{

@@ -22,12 +22,12 @@ using namespace BWAPI;
 class Utilitarios
 {
 public:
-	std::atomic<bool> GameOver;
-	std::atomic<bool> temPool;
+	std::atomic<bool> GameOver; //já acabou jessica?
+	std::atomic<bool> temPool; 
 	std::atomic<bool> construindoPool;
 	std::atomic<bool> substituiDrone;
-	std::atomic<bool> startScout;
-	std::atomic<bool> rush;
+	std::atomic<bool> scout;
+	std::atomic<bool> ataque;
 	std::atomic<bool> construirPool;
 
 	//Contadores de unidades
@@ -37,22 +37,23 @@ public:
 	std::atomic<int> qtdDefensores;
 	
 	HANDLE ghMutex;
-	static Utilitarios* getInstancia();
+	
+	BWAPI::Position baseInimigo; // guarda a posição da base inimiga
+	BWAPI::Unitset grupoAtaque; // aqui fica todos os zerglings que vão fazer um ataque
 
-	BWAPI::Unitset grupoAtaque;
+	static Utilitarios* getInstancia(); // criar uma instncia da classe
+	BWAPI::PositionOrUnit getAlvo(); // pega um algo para atacar
+	Unit Utilitarios::getAlvoDefesa(Unit unit); //pega um alvo para atacar durante uma defesa
+	std::list<BWAPI::Unit> getListaAlvos(); // pega todos os algos proximos
+	int Utilitarios::getPrioridade(BWAPI::Unit unit); // seleciona a prioridade de ataque
+	BWAPI::Position getBaseInimigo(); // pega posição da base inimiga
 
-	BWAPI::PositionOrUnit getAlvo();
-	Unit Utilitarios::getAlvoDefesa(Unit unit);
-	std::list<BWAPI::Unit> getListaAlvos();
-	BWAPI::Position baseInimigo;
-	int Utilitarios::getPrioridade(BWAPI::Unit unit);
-	BWAPI::Position getBaseInimigo();
 private:
 	~Utilitarios();
 	Utilitarios();
-	static Utilitarios* instance;
-	std::set<BWAPI::Unit> getInimigos();
-	int getPrioridade(BWAPI::UnitType unit);
+	static Utilitarios* instanciaUtil; //instancia da classe Utilitarios
+	std::set<BWAPI::Unit> getInimigos(); //pega todos os tipos de inimigos do oponente
+	int getPrioridade(BWAPI::UnitType unit); //sobrecarga
 	
 };
 

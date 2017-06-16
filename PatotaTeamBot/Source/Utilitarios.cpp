@@ -3,16 +3,16 @@
 using namespace BWAPI;
 using namespace Filter;
 
-Utilitarios* Utilitarios::instance;
+Utilitarios* Utilitarios::instanciaUtil;
 
 Utilitarios::Utilitarios()
 {
 	GameOver = false;
-	temPool = false;
+	temPool = false;		 
 	construindoPool = false;
 	substituiDrone = false;
-	startScout = false;
-	rush = false;
+	scout = false;
+	ataque = false;
 	construirPool = false;
 
 	//Inicializando contadores
@@ -35,53 +35,53 @@ Utilitarios::~Utilitarios()
 {
 }
 
-Utilitarios* Utilitarios::getInstancia()
+Utilitarios* Utilitarios::getInstancia() //cria uma intancia da classe se ela não existe
 {
-	if (instance == NULL) 
+	if (instanciaUtil == NULL) 
 	{
-		instance = new Utilitarios();
+		instanciaUtil = new Utilitarios();
 	}
-	return instance;
+	return instanciaUtil;
 }
 
 PositionOrUnit Utilitarios::getAlvo()
 {
-	std::set<BWAPI::Unit> enemies = getInimigos();
-	BWAPI::PositionOrUnit target = baseInimigo;
-	int priority = 99;
+	std::set<BWAPI::Unit> grupoInimigos = getInimigos(); //pega todas as unidades do inimigo
+	BWAPI::PositionOrUnit algo = baseInimigo; 
+	int priority = 0; //prioridade minima
 
-	for each (BWAPI::Unit u in enemies)
+	for each (BWAPI::Unit u in grupoInimigos)  //para cada inimigo do grupo obtido
 	{
 		if (u->exists() && u->isTargetable()) 
 		{
-			if (u->isAttacking())
+			if (u->isAttacking()) // se o inimigo está atacando a prioridade é atacar ele
 			{
-				target = u;
+				algo = u;
 				break;
 			}
 			else
 			{
-				int unitPriority = getPrioridade(u->getType());
-				if (unitPriority < priority)
+				int unitPriority = getPrioridade(u->getType()); //seleciona o valor da prioridade 
+				if (unitPriority > priority) //verifica se vai haver troca de prioridade
 				{
 					priority = unitPriority;
-					target = u;
+					algo = u;
 				}
 			}
 		}
 	}
 
-	return target;
+	return algo;
 }
 
 Unit Utilitarios::getAlvoDefesa(Unit unit)
 {
-	std::list<BWAPI::Unit> list = getListaAlvos();
+	std::list<BWAPI::Unit> list = getListaAlvos(); // pega todos os alvos que estam atacando
 	std::list<BWAPI::Unit>::iterator it = list.begin();
 
-	while (it != list.end()) 
+	while (it != list.end())  // para cada alvo
 	{
-		if ((*it)->getDistance(unit) < 100) 
+		if ((*it)->getDistance(unit) < 100)// se ele estiver perto, ataca!
 		{
 			return *it;
 		}
@@ -94,47 +94,47 @@ Unit Utilitarios::getAlvoDefesa(Unit unit)
 int Utilitarios::getPrioridade(BWAPI::UnitType unit)
 {
 	if (unit == BWAPI::UnitTypes::Terran_Marine || unit == BWAPI::UnitTypes::Zerg_Zergling || unit == BWAPI::UnitTypes::Protoss_Zealot)
-		return 1;
+		return 7;
 	else if (unit == BWAPI::UnitTypes::Terran_SCV)
-		return 2;
+		return 6;
 	else if (unit == BWAPI::UnitTypes::Terran_Bunker || unit == BWAPI::UnitTypes::Zerg_Drone || unit == BWAPI::UnitTypes::Protoss_Probe)
-		return 3;
+		return 5;
 	else if (unit == BWAPI::UnitTypes::Terran_Barracks || unit == BWAPI::UnitTypes::Zerg_Spawning_Pool || unit == BWAPI::UnitTypes::Protoss_Pylon)
 		return 4;
 	else if (unit == BWAPI::UnitTypes::Terran_Command_Center || unit == BWAPI::UnitTypes::Zerg_Creep_Colony || unit == BWAPI::UnitTypes::Protoss_Nexus)
-		return 5;
+		return 3;
 	else if (unit == BWAPI::UnitTypes::Terran_Supply_Depot || unit == BWAPI::UnitTypes::Protoss_Gateway)
-		return 6;
+		return 2;
 	else
-		return 7;
+		return 1;
 }
 
 std::set<BWAPI::Unit> Utilitarios::getInimigos()
 {
-	const BWAPI::Unitset units = Broodwar->enemy()->getUnits();
-	std::set<BWAPI::Unit> enemies;
-	enemies.insert(units.begin(), units.end());
-	return enemies;
+	const BWAPI::Unitset unidades = Broodwar->enemy()->getUnits(); //pega as unidades do enimigo
+	std::set<BWAPI::Unit> grupoInimigos; 
+	grupoInimigos.insert(unidades.begin(), unidades.end()); //insere todos os inimigos aqui
+	return grupoInimigos;
 }
 
 Position Utilitarios::getBaseInimigo()
 {
-	TilePosition::list bases = Broodwar->getStartLocations();
+	TilePosition::list bases = Broodwar->getStartLocations(); //pega todas as localizações iniciais
 	Position ret;
 	if (bases.size() <= 2)
 	{
-		for each (TilePosition p in bases)
+		for each (TilePosition p in bases) //para cada base
 		{
-			if (p != Broodwar->self()->getStartLocation())
+			if (p != Broodwar->self()->getStartLocation()) // se a localização não for a minha essa localização é a base inimiga
 			{
 				ret = (Position)p;
 			}
 		}
 	}
-	else
-	{
-		ret = (Position)Broodwar->self()->getStartLocation();
-	}
+	//else
+	//{
+	//	ret = (Position)Broodwar->self()->getStartLocation();
+	//}
 	return ret;
 
 }
@@ -142,7 +142,7 @@ Position Utilitarios::getBaseInimigo()
 bool compararPrioridade(Unit& u1, Unit& u2) 
 {
 	bool ret = false;
-	if (util->getPrioridade(u1) < util->getPrioridade(u2))
+	if (util->getPrioridade(u1) > util->getPrioridade(u2))
 	{
 		ret = true;
 	}
@@ -151,25 +151,25 @@ bool compararPrioridade(Unit& u1, Unit& u2)
 
 std::list<BWAPI::Unit> Utilitarios::getListaAlvos() 
 {
-	const BWAPI::Unitset units = Broodwar->enemy()->getUnits();
-	std::list<Unit> enemies;
-	for each (Unit u in units)
+	const BWAPI::Unitset unidades = Broodwar->enemy()->getUnits(); //pega as unidades do enimigo
+	std::list<Unit> grupoInimigos;
+	for each (Unit u in unidades) // para cada unidade
 	{
 		if (u->getType() != UnitTypes::Zerg_Overlord && u->exists() && u->isTargetable())
 		{
-			enemies.push_back(u);
+			grupoInimigos.push_back(u);
 		}
 	}
-	enemies.sort(compararPrioridade);
+	grupoInimigos.sort(compararPrioridade); // vai ordenar a lista de acordo com a prioridade
 
-	return enemies;
+	return grupoInimigos;
 }
 
 int Utilitarios::getPrioridade(BWAPI::Unit unit)
 {
-	if (!unit->isAttacking()) 
+	if (!unit->isAttacking()) //se não seja atacando
 	{
 		return getPrioridade(unit->getType());
 	}
-	return 0;
+	return 8; // se estiver atacando a prioridade é maxima
 }

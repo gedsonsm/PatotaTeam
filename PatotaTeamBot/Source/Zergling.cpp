@@ -13,18 +13,20 @@ DWORD WINAPI Zergling::run(LPVOID param){
 	BWAPI::Unit unit = static_cast<BWAPI::Unit>(param);
 	DWORD dwWaitResult;
 	Player self = BWAPI::Broodwar->self();
-	Unit target;
-	Unit lastTarget = nullptr;
-	bool defenseSquad = false;
-	bool attackSquad = false;
+	Unit algo;
+	Unit ultimoAlvo = nullptr;
+	bool defensor = false;
+	bool atacante = false;
 
-	if (util->rush && util->qtdDefensores < MAX_DEFENSORES) {
-		defenseSquad = true;
+	if (util->ataque && util->qtdDefensores < MAX_DEFENSORES) //se a quantidade de defensores estiver baixa o zergling vira defensor
+	{
+		defensor = true;
 		util->qtdDefensores++;
 	}
-	else {
-		util->grupoAtaque.insert(unit);
-		attackSquad = true;
+	else 
+	{
+		util->grupoAtaque.insert(unit); //se não ele vira atacante
+		atacante = true;
 	}
 
 	while (true){
@@ -34,7 +36,7 @@ DWORD WINAPI Zergling::run(LPVOID param){
 
 		//// If end game, or if it exists (remember to always check)
 		if (util->GameOver || unit == NULL || !unit->exists())  {
-			if (defenseSquad) {
+			if (defensor) {
 				util->qtdDefensores--;
 			}
 			ReleaseMutex(util->ghMutex);
@@ -48,7 +50,7 @@ DWORD WINAPI Zergling::run(LPVOID param){
 		}
 
 		// You can check tons of others things like isStuck, isLockedDown, constructing
-		if (attackSquad && util->rush){ // You can create it on the onUnitComplete too!
+		if (atacante && util->ataque){ // You can create it on the onUnitComplete too!
 			ReleaseMutex(util->ghMutex);
 			Sleep(500);
 			continue;
@@ -56,19 +58,24 @@ DWORD WINAPI Zergling::run(LPVOID param){
 
 		if (dwWaitResult == WAIT_OBJECT_0 || dwWaitResult == WAIT_ABANDONED) //RAII
 		{
-			if(defenseSquad && !util->rush) {
+			if(defensor && util->ataque) //se for hora de atacar, vai deixar de ser defensor e vai se juntar ao grupo de ataque
+			{
 				util->grupoAtaque.insert(unit);
-				attackSquad = true;
+				atacante = true;
 				util->qtdDefensores--;
-				defenseSquad = false;
-			} else if (defenseSquad || (attackSquad && !util->rush)) {
-				target = util->getAlvoDefesa(unit);
-				if (target != nullptr && target != lastTarget) {
-					unit->attack(target);
-					lastTarget = target;
+				defensor = false;
+			} 
+			else if (defensor || (atacante && !util->ataque)) // se for defensor ou atacante e não hover ataque
+			{
+				algo = util->getAlvoDefesa(unit);
+				if (algo != nullptr && algo != ultimoAlvo) // vai atacar um inimigo que estiver atacando a base
+				{
+					unit->attack(algo);
+					ultimoAlvo = algo;
 				}
-				else if (unit->getDistance((Position)self->getStartLocation()) > 50 && !unit->isMoving()) {
-					unit->move((Position)self->getStartLocation());
+				else if (unit->getDistance((Position)self->getStartLocation()) > 50 && !unit->isMoving()) // se nao hover inimigos atacando a base
+				{
+					unit->move((Position)self->getStartLocation());// vai se ficar parado na posição inicial
 				}
 			}
 

@@ -13,8 +13,8 @@ DWORD WINAPI Overlord::run(LPVOID param){
 	BWAPI::Unit unit = static_cast<BWAPI::Unit>(param);
 	DWORD dwWaitResult;
 	Player self = BWAPI::Broodwar->self();
-	PositionOrUnit target;
-	PositionOrUnit lastTarget = nullptr;
+	PositionOrUnit algo;
+	PositionOrUnit ultimoAlvo = nullptr;
 	TilePosition::list bases = Broodwar->getStartLocations();
 	TilePosition::list::iterator it = bases.begin();
 	TilePosition::list::iterator lastIt = bases.begin();
@@ -40,38 +40,17 @@ DWORD WINAPI Overlord::run(LPVOID param){
 
 		if (dwWaitResult == WAIT_OBJECT_0 || dwWaitResult == WAIT_ABANDONED) //RAII
 		{
-			if (!util->startScout) {
-				util->startScout = true;
-
-				if (util->baseInimigo == (Position)self->getStartLocation() && bases.size() > 2) {
-					for each (TilePosition p in bases)
-					{
-						if (p != Broodwar->self()->getStartLocation())
-							unit->move((Position)p, true);
-					}
-					scouting = true;
-				}
+			if (unit->isUnderAttack()) // volta pra base se sofre um ataque
+			{
+				unit->move((Position)self->getStartLocation());
+			}
+			else if (!util->scout) // vai na base inimiga
+			{
+				unit->move(util->baseInimigo);
+				util->scout = true;
 			}
 
-			if (scouting) {
-				if (unit->isUnderAttack()) {
-					int distance = -1;
-					Position base;
-					for each (TilePosition p in bases) {
-						int distTemp = unit->getDistance((Position)p);
-						if (p != Broodwar->self()->getStartLocation()){
-							if (distance == -1 || distance > distTemp) {
-								distance = distTemp;
-								base = (Position)p;
-							}
-						}
-					}
 
-					util->baseInimigo = base;
-					unit->move((Position)self->getStartLocation());
-					scouting = false;
-				}
-			}
 
 			if (!ReleaseMutex(util->ghMutex))
 			{
