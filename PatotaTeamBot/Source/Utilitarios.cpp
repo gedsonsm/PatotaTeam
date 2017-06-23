@@ -11,7 +11,7 @@ Utilitarios::Utilitarios()
 	temPool = false;		 
 	construindoPool = false;
 	substituiDrone = false;
-	scout = false;
+	scout = true;
 	ataque = false;
 	construirPool = false;
 
