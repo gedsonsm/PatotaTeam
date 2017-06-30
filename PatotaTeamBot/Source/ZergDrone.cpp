@@ -13,10 +13,24 @@ ZergDrone::~ZergDrone()
 
 DWORD WINAPI ZergDrone::run(LPVOID param){
 	BWAPI::Unit unit = static_cast<BWAPI::Unit>(param);
+	Player self = BWAPI::Broodwar->self();
+	BWAPI::Position localInicial = (Position)self->getStartLocation();
 	DWORD dwWaitResult;
 	Unit algo = nullptr;
 	bool devolverCarga = true;
 	bool estaColetanto = false;
+
+	bool scouting = false;
+	int i = 0;
+	int j = 0;
+	bool canto = false;
+	bool direita = false;
+	bool esquerda = false;
+	bool cima = false;
+	bool baixo = false;
+	bool outroLado = false;
+	int contCanto = 0;
+	bool paraScout = true;
 
 	Unit lastUnitTarget = nullptr;
 	Unit unitTarget;
@@ -43,6 +57,7 @@ DWORD WINAPI ZergDrone::run(LPVOID param){
 		{
 			if (util->construirPool && !util->construindoPool)  // verifica se existe uma ordem para construir uma pool e uma já não está sendo construida
 			{
+				Broodwar->drawTextScreen(100, 50, "FIRST");
 				TilePosition localConstrucao = Broodwar->getBuildLocation(UnitTypes::Zerg_Spawning_Pool, unit->getTilePosition());
 				if (localConstrucao) //se tem um lugar pra costruie
 				{
@@ -54,10 +69,10 @@ DWORD WINAPI ZergDrone::run(LPVOID param){
 				ReleaseMutex(util->ghMutex); //libera o mutex, pois o drone vai deixar de existir
 				return 0;
 			}
-
 			unitTarget = util->getAlvoDefesa(unit);
 			if (unitTarget != nullptr)  // se existe um algo que está atacando
 			{
+				Broodwar->drawTextScreen(100, 50, "SECOND");
 				if (unit->isCarryingMinerals()) // se estiver carregando material, vá devolver
 				{
 					devolverCarga = false;
@@ -76,12 +91,13 @@ DWORD WINAPI ZergDrone::run(LPVOID param){
 			}
 			else if (unit->isCarryingGas() || unit->isCarryingMinerals()) //se está carregando algo
 			{
+				Broodwar->drawTextScreen(100, 50, "THIRD");
 				estaColetanto = false; //para de coletar
-
+				//Broodwar->drawTextScreen(100, 50, "22222");
 				if (!devolverCarga)  // devolve a carga
 				{
+					//Broodwar->drawTextScreen(100, 50, "11111");
 					unit->returnCargo();
-
 					Mineral->leaveQueue(algo);
 					algo = nullptr;
 					devolverCarga = true;
@@ -89,8 +105,10 @@ DWORD WINAPI ZergDrone::run(LPVOID param){
 			}
 			else if (!unit->getPowerUp()) //não sei porque, mas tive dificuldade de tirar esse if, deve ser algo da api
 			{
+				//Broodwar->drawTextScreen(100, 50, "FOURTH");
 				if (devolverCarga) //se já devolveu
 				{
+					//Broodwar->drawTextScreen(100, 50, "33333");
 					algo = Mineral->getMineralField(unit); //pega um campo de minerio mais proximo
 					devolverCarga = false;
 				}
@@ -105,7 +123,7 @@ DWORD WINAPI ZergDrone::run(LPVOID param){
 								estaColetanto = true;
 								if (!unit->gather(algo)) // começa a coletar
 								{
-									//handle error
+									continue;
 								}
 							}
 						}
@@ -117,22 +135,106 @@ DWORD WINAPI ZergDrone::run(LPVOID param){
 								estaColetanto = true;
 								if (!unit->gather(algo))
 								{
-									//handle error
+									continue;
 								}
 							}
 						}
 					}
 					else // se o campo não existe mais, devolve a carga
 					{
+						//Broodwar->drawTextScreen(100, 50, "ACABOU %d",acabou);
+						//acabou++;
 						devolverCarga = true;
 					}
 				}
 				else // se não tem campo, devolve a carga
 				{
+					//	Broodwar->drawTextScreen(100, 50, "PAROU");
 					devolverCarga = true;
 				}
 			} // closure: has no powerup
 
+			if (unit->isIdle())
+			{
+			if (!unit->isMoving())
+			{
+				if (localInicial.y > 1000)
+				{
+					if (!outroLado)
+					{
+						if (localInicial.x + i <= 200)
+						{
+							canto = true;
+						}
+						if (!canto)
+						{
+							i -= 100;
+						}
+						else if (canto && contCanto < 6)
+						{
+							j -= 100;
+							contCanto++;
+						}
+						else
+						{
+							outroLado = true;
+							canto = false;
+							contCanto = 0;
+						}
+					}
+					else
+					{
+						if (localInicial.x + i >= 1700)
+						{
+							paraScout = true;
+						}
+						if (!canto)
+						{
+							i += 100;
+						}
+					}
+				}
+				if (localInicial.y <= 1000)
+				{
+					if (!outroLado)
+					{
+						if (localInicial.x + i >= 1700)
+						{
+							canto = true;
+						}
+						if (!canto)
+						{
+							i += 100;
+						}
+						else if (canto && contCanto < 6)
+						{
+							j += 100;
+							contCanto++;
+						}
+						else
+						{
+							outroLado = true;
+							canto = false;
+							contCanto = 0;
+						}
+					}
+					else
+					{
+						if (localInicial.x + i <= 200)
+						{
+							paraScout = true;
+						}
+						if (!canto)
+						{
+							i -= 100;
+						}
+					}
+				}
+				Broodwar->drawTextScreen(100, 50, "PORRA");
+				BWAPI::Position pos(localInicial.x + i, localInicial.y + j);
+				unit->move(pos);
+			}
+			}
 			if (!ReleaseMutex(util->ghMutex))
 			{
 				// Handle error.

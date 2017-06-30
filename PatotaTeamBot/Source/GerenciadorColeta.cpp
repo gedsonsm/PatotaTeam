@@ -94,9 +94,12 @@ void GerenciadorColeta::insereNovosMinerais()
 {
 	mineralList = getMineralFields();
 	mineralQueueCount = new int[mineralList.size()];
-	for (u_int i = 0; i < mineralList.size(); i++) {
+	for (u_int i = 0; i < mineralList.size(); i++) 
+	{
+		//Broodwar->drawTextScreen(100, 50, "JAzidas: %d", mineralQueueCount[0]);
 		mineralQueueCount[i] = 0;
 	}
+	
 }
 
 void GerenciadorColeta::printa()
@@ -105,8 +108,8 @@ void GerenciadorColeta::printa()
 	int j = 0;
 	for each (BWAPI::Unit m in mineralList)
 	{
-		Broodwar->drawTextScreen(i, 60, "%d",j);
-		printf("---%d/n",mineralList.size());
+		//Broodwar->drawTextScreen(i, 60, "%d",j);
+		//printf("---%d/n",mineralList.size());
 		i += 50;
 		j++;
 	}

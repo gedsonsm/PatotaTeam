@@ -18,7 +18,7 @@ void PatotaTeamBot::onStart()
 	if (Broodwar->enemy()) // First make sure there is an enemy AA: Make sure to check EVERYTHING.
 		Broodwar << "The matchup is " << Broodwar->self()->getRace() << " vs " << Broodwar->enemy()->getRace() << std::endl;
 
-	new GerenciadorAtaque();
+	//new GerenciadorAtaque();
 
 }
 
