@@ -141,9 +141,11 @@ DWORD WINAPI Overlord::run(LPVOID param){
 					}
 				}
 				BWAPI::Position pos(localInicial.x+i, localInicial.y+j);
+				Mineral->insereNovosMinerais();
 				unit->move(pos);
 			}
 			Broodwar->drawTextScreen(100, 50, "%d -- %d", localInicial.x + i, localInicial.y + j);
+			Mineral->printa();
 		
 			if (!ReleaseMutex(util->ghMutex))
 			{

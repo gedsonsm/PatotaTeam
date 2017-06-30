@@ -11,7 +11,7 @@ void PatotaTeamBot::onStart()
 
 	// Set the command optimization level so that common commands can be grouped
 	// and reduce the bot's APM (Actions Per Minute).
-	Broodwar->setCommandOptimizationLevel(2);
+	Broodwar->setCommandOptimizationLevel(2); 
 
 	// Retrieve you and your enemy's races. enemy() will just return the first enemy. AA: Not a problem with just 2.
 	// If you wish to deal with multiple enemies then you must use enemies().
