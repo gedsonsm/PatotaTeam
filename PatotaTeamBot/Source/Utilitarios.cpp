@@ -11,9 +11,14 @@ Utilitarios::Utilitarios()
 	temPool = false;		 
 	construindoPool = false;
 	substituiDrone = false;
+	construindoExtractor = false;
+	construirExtractor = false;
 	scout = true;
 	ataque = false;
 	construirPool = false;
+	aux = false;
+	fazDroneTest = false;
+	coletaGas = true;
 
 	//Inicializando contadores
 	qtdLarva = 0;
@@ -47,7 +52,7 @@ Utilitarios* Utilitarios::getInstancia() //cria uma intancia da classe se ela nã
 PositionOrUnit Utilitarios::getAlvo()
 {
 	std::set<BWAPI::Unit> grupoInimigos = getInimigos(); //pega todas as unidades do inimigo
-	BWAPI::PositionOrUnit algo = baseInimigo; 
+	BWAPI::PositionOrUnit alvo = baseInimigo; 
 	int priority = 0; //prioridade minima
 
 	for each (BWAPI::Unit u in grupoInimigos)  //para cada inimigo do grupo obtido
@@ -56,7 +61,7 @@ PositionOrUnit Utilitarios::getAlvo()
 		{
 			if (u->isAttacking()) // se o inimigo está atacando a prioridade é atacar ele
 			{
-				algo = u;
+				alvo = u;
 				break;
 			}
 			else
@@ -65,13 +70,13 @@ PositionOrUnit Utilitarios::getAlvo()
 				if (unitPriority > priority) //verifica se vai haver troca de prioridade
 				{
 					priority = unitPriority;
-					algo = u;
+					alvo = u;
 				}
 			}
 		}
 	}
 
-	return algo;
+	return alvo;
 }
 
 Unit Utilitarios::getAlvoDefesa(Unit unit)
@@ -173,3 +178,4 @@ int Utilitarios::getPrioridade(BWAPI::Unit unit)
 	}
 	return 8; // se estiver atacando a prioridade é maxima
 }
+

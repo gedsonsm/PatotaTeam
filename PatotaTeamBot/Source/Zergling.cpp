@@ -13,7 +13,7 @@ DWORD WINAPI Zergling::run(LPVOID param){
 	BWAPI::Unit unit = static_cast<BWAPI::Unit>(param);
 	DWORD dwWaitResult;
 	Player self = BWAPI::Broodwar->self();
-	Unit algo;
+	Unit alvo;
 	Unit ultimoAlvo = nullptr;
 	bool defensor = false;
 	bool atacante = false;
@@ -67,11 +67,11 @@ DWORD WINAPI Zergling::run(LPVOID param){
 			} 
 			else if (defensor || (atacante && !util->ataque)) // se for defensor ou atacante e não hover ataque
 			{
-				algo = util->getAlvoDefesa(unit);
-				if (algo != nullptr && algo != ultimoAlvo) // vai atacar um inimigo que estiver atacando a base
+				alvo = util->getAlvoDefesa(unit);
+				if (alvo != nullptr && alvo != ultimoAlvo) // vai atacar um inimigo que estiver atacando a base
 				{
-					unit->attack(algo);
-					ultimoAlvo = algo;
+					unit->attack(alvo);
+					ultimoAlvo = alvo;
 				}
 				else if (unit->getDistance((Position)self->getStartLocation()) > 50 && !unit->isMoving()) // se nao hover inimigos atacando a base
 				{

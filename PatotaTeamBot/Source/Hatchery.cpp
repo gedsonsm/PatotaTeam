@@ -49,7 +49,7 @@ DWORD WINAPI Hatchery::run(LPVOID param){
 				{
 					hq->train(drone);
 					util->substituiDrone = false; // o drone já foi substituido
-				} 
+				}
 				else if (util->temPool)// verifica se ja tem uma pool
 				{
 					if (util->qtdLarva > 0 && self->minerals() >= zergling.mineralPrice()) // se tem recursos sufucientes para treinar zerglings

@@ -11,9 +11,10 @@ Overlord::~Overlord()
 
 DWORD WINAPI Overlord::run(LPVOID param){
 	BWAPI::Unit unit = static_cast<BWAPI::Unit>(param);
+
 	DWORD dwWaitResult;
 	Player self = BWAPI::Broodwar->self();
-	PositionOrUnit algo;
+	PositionOrUnit alvo;
 	PositionOrUnit ultimoAlvo = nullptr;
 	TilePosition::list bases = Broodwar->getStartLocations();
 	TilePosition::list::iterator it = bases.begin();
@@ -21,6 +22,9 @@ DWORD WINAPI Overlord::run(LPVOID param){
 	BWAPI::Position localInicial = (Position)self->getStartLocation();
 	BWAPI::Unit unidadesIniciais = BWAPI::Broodwar->getClosestUnit((Position)self->getStartLocation(), BWAPI::Filter::IsResourceDepot); 
 	BWAPI::Unitset mineriosIniciais = unidadesIniciais->getUnitsInRadius(1024, BWAPI::Filter::IsMineralField);
+	BWAPI::Unitset mineraisAoRedor;
+	
+
 	bool scouting = false;
 	int i = 0;
 	int j = 0;
@@ -112,7 +116,7 @@ DWORD WINAPI Overlord::run(LPVOID param){
 						{
 							i += 100;
 						}
-						else if (canto && contCanto < 6)
+						else if (canto && contCanto < 6	)
 						{
 							j += 100;
 							contCanto++;
@@ -141,7 +145,6 @@ DWORD WINAPI Overlord::run(LPVOID param){
 			}
 			Broodwar->drawTextScreen(100, 50, "%d -- %d", localInicial.x + i, localInicial.y + j);
 		
-
 			if (!ReleaseMutex(util->ghMutex))
 			{
 				// Handle error.

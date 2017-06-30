@@ -23,12 +23,14 @@ public:
 
 	BWAPI::Unit getMineralField(BWAPI::Unit);
 	void leaveQueue(BWAPI::Unit);
-
+	void GerenciadorColeta::insereNovosMinerais();
+	void GerenciadorColeta::printa();
 private:
 	GerenciadorColeta();
 	~GerenciadorColeta();
 	std::atomic<int*> mineralQueueCount;
 	static GerenciadorColeta* instanciaColeta;
 	MineralQueue getMineralFields();
+	
 };
 

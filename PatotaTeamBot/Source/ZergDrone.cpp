@@ -63,7 +63,7 @@ DWORD WINAPI ZergDrone::run(LPVOID param){
 					devolverCarga = false;
 					estaColetanto = false;
 				}
-				else 
+				else
 				{
 					devolverCarga = true;
 					estaColetanto = false;
@@ -73,11 +73,11 @@ DWORD WINAPI ZergDrone::run(LPVOID param){
 					unit->attack(unitTarget);
 					lastUnitTarget = unitTarget;
 				}
-			} 
+			}
 			else if (unit->isCarryingGas() || unit->isCarryingMinerals()) //se está carregando algo
 			{
 				estaColetanto = false; //para de coletar
-				
+
 				if (!devolverCarga)  // devolve a carga
 				{
 					unit->returnCargo();
@@ -112,7 +112,7 @@ DWORD WINAPI ZergDrone::run(LPVOID param){
 						else
 						{
 							// se não está coletando e volta a coletar
-							if (!estaColetanto || (unit->getOrderTarget() != algo && unit->getOrderTarget()->getType().isMineralField())) 
+							if (!estaColetanto || (unit->getOrderTarget() != algo && unit->getOrderTarget()->getType().isMineralField()))
 							{
 								estaColetanto = true;
 								if (!unit->gather(algo))
@@ -132,7 +132,7 @@ DWORD WINAPI ZergDrone::run(LPVOID param){
 					devolverCarga = true;
 				}
 			} // closure: has no powerup
-			
+
 			if (!ReleaseMutex(util->ghMutex))
 			{
 				// Handle error.

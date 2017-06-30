@@ -42,7 +42,7 @@ DWORD WINAPI GerenciadorAtaque::run(LPVOID param){
 	GerenciadorAtaque* squad = static_cast<GerenciadorAtaque*>(param);
 	DWORD dwWaitResult;
 	Player self = BWAPI::Broodwar->self();
-	PositionOrUnit algo;
+	PositionOrUnit alvo;
 	PositionOrUnit ultimoAlvo = nullptr;
 	std::list<BWAPI::Unit> list;
 	bool andando = false;

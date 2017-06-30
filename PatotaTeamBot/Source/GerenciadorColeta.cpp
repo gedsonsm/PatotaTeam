@@ -46,7 +46,7 @@ BWAPI::Unit GerenciadorColeta::getMineralField(BWAPI::Unit unit) {
 	int best_time = 999999;
 	int i = 0;
 	for each (BWAPI::Unit m in mineralList) {
-		if (!m->exists() || !m->isTargetable()) {
+		if (!m->exists()) {
 			i++;
 			continue;
 		}
@@ -89,4 +89,25 @@ MineralQueue GerenciadorColeta::getMineralFields() {
 	MineralQueue minerals;
 	minerals.insert(temp.begin(), temp.end());
 	return minerals;
+}
+void GerenciadorColeta::insereNovosMinerais() 
+{
+	mineralList = getMineralFields();
+	mineralQueueCount = new int[mineralList.size()];
+	for (u_int i = 0; i < mineralList.size(); i++) {
+		mineralQueueCount[i] = 0;
+	}
+}
+
+void GerenciadorColeta::printa()
+{
+	int i = 3;
+	int j = 0;
+	for each (BWAPI::Unit m in mineralList)
+	{
+		Broodwar->drawTextScreen(i, 60, "%d",j);
+		printf("---%d/n",mineralList.size());
+		i += 50;
+		j++;
+	}
 }

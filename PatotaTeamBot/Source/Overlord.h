@@ -1,6 +1,7 @@
 #include "BWAPI.h"
 #include <Windows.h>
 #include "Utilitarios.h"
+#include "GerenciadorColeta.h"
 
 using namespace BWAPI;
 using namespace Filter;

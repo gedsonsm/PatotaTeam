@@ -26,6 +26,8 @@ public:
 	std::atomic<bool> temPool; 
 	std::atomic<bool> construindoPool;
 	std::atomic<bool> substituiDrone;
+	std::atomic<bool >construindoExtractor;
+	std::atomic<bool> construirExtractor;
 	std::atomic<bool> scout;
 	std::atomic<bool> ataque;
 	std::atomic<bool> construirPool;
@@ -35,6 +37,10 @@ public:
 	std::atomic<int> qtdZergling;
 	std::atomic<int> qtdDrone;
 	std::atomic<int> qtdDefensores;
+	std::atomic<bool> aux;
+	std::atomic<bool> fazDroneTest;
+	BWAPI::Unitset gasAoRedor;
+	std::atomic<bool> coletaGas;
 	
 	HANDLE ghMutex;
 	
