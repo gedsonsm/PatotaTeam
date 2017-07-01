@@ -140,12 +140,12 @@ DWORD WINAPI Overlord::run(LPVOID param){
 						}
 					}
 				}
-				Broodwar->drawTextScreen(100, 50, "PORRA");
+				
 				BWAPI::Position pos(localInicial.x+i, localInicial.y+j);
 				
 				unit->move(pos);
 			}
-			Mineral->insereNovosMinerais();
+			//Mineral->insereNovosMinerais();
 			//Broodwar->drawTextScreen(100, 50, "PORRA");
 			//Broodwar->drawTextScreen(100, 50, "%d -- %d", localInicial.x + i, localInicial.y + j);
 			//Mineral->printa();

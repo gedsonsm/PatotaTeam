@@ -119,7 +119,7 @@ DWORD WINAPI ZergDrone::run(LPVOID param){
 								estaColetanto = true;
 								if (!unit->gather(algo)) // começa a coletar
 								{
-									continue;
+									//continue;
 								}
 							}
 						}
@@ -131,7 +131,7 @@ DWORD WINAPI ZergDrone::run(LPVOID param){
 								estaColetanto = true;
 								if (!unit->gather(algo))
 								{
-									continue;
+									//continue;
 								}
 							}
 						}
@@ -179,8 +179,8 @@ DWORD WINAPI ZergDrone::run(LPVOID param){
 							{
 								devolverCarga = true;
 								estaColetanto = false;
-								i = cont;
-								j = cont;
+								i = 0;
+								j = 0;
 								canto = false;
 								outroLado = false;
 								contCanto = 0;
@@ -217,12 +217,12 @@ DWORD WINAPI ZergDrone::run(LPVOID param){
 								
 								devolverCarga = true;
 								estaColetanto = false;
-								i = cont;
-								j = cont;
+								i = 0;
+								j = 0;
 								canto = false;
 								outroLado = false;
 								contCanto = 0;
-								cont = cont + 20;
+								//cont = cont + 20;
 							}
 							if (!canto)
 								i -= 100;
