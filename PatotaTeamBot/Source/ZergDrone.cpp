@@ -20,17 +20,13 @@ DWORD WINAPI ZergDrone::run(LPVOID param){
 	bool devolverCarga = true;
 	bool estaColetanto = false;
 
-	bool scouting = false;
+
 	int i = 0;
 	int j = 0;
 	bool canto = false;
-	bool direita = false;
-	bool esquerda = false;
-	bool cima = false;
-	bool baixo = false;
 	bool outroLado = false;
 	int contCanto = 0;
-	bool paraScout = true;
+	int cont = 0;
 
 	Unit lastUnitTarget = nullptr;
 	Unit unitTarget;
@@ -72,7 +68,7 @@ DWORD WINAPI ZergDrone::run(LPVOID param){
 			unitTarget = util->getAlvoDefesa(unit);
 			if (unitTarget != nullptr)  // se existe um algo que está atacando
 			{
-				Broodwar->drawTextScreen(100, 50, "SECOND");
+				//Broodwar->drawTextScreen(100, 50, "SECOND");
 				if (unit->isCarryingMinerals()) // se estiver carregando material, vá devolver
 				{
 					devolverCarga = false;
@@ -153,87 +149,89 @@ DWORD WINAPI ZergDrone::run(LPVOID param){
 					devolverCarga = true;
 				}
 			} // closure: has no powerup
-
-			if (unit->isIdle())
+			if (unit->isIdle())		//Se ele não esta fazendo nada
 			{
-			if (!unit->isMoving())
-			{
-				if (localInicial.y > 1000)
+				if (!unit->isMoving())					//Funcao de movimentação de GEDSON com uma modificacao
 				{
-					if (!outroLado)
+					if (localInicial.y > 1000)
 					{
-						if (localInicial.x + i <= 200)
+						if (!outroLado)
 						{
-							canto = true;
-						}
-						if (!canto)
-						{
-							i -= 100;
-						}
-						else if (canto && contCanto < 6)
-						{
-							j -= 100;
-							contCanto++;
+							if (localInicial.x + i <= 200)
+								canto = true;
+							if (!canto)
+								i -= 100;
+							else if (canto && contCanto < 6)
+							{
+								j -= 100;
+								contCanto++;
+							}
+							else
+							{
+								outroLado = true;
+								canto = false;
+								contCanto = 0;
+							}
 						}
 						else
 						{
-							outroLado = true;
-							canto = false;
-							contCanto = 0;
+							if (localInicial.x + i >= 1700) //Modificação, quando o caminho acaba, o drone volta pra base e recomeca o caminho
+							{
+								devolverCarga = true;
+								estaColetanto = false;
+								i = cont;
+								j = cont;
+								canto = false;
+								outroLado = false;
+								contCanto = 0;
+								cont = cont + 20;
+							}
+							if (!canto)
+								i += 100;
 						}
 					}
-					else
+					if (localInicial.y <= 1000)
 					{
-						if (localInicial.x + i >= 1700)
+						if (!outroLado)
 						{
-							paraScout = true;
-						}
-						if (!canto)
-						{
-							i += 100;
-						}
-					}
-				}
-				if (localInicial.y <= 1000)
-				{
-					if (!outroLado)
-					{
-						if (localInicial.x + i >= 1700)
-						{
-							canto = true;
-						}
-						if (!canto)
-						{
-							i += 100;
-						}
-						else if (canto && contCanto < 6)
-						{
-							j += 100;
-							contCanto++;
+							if (localInicial.x + i >= 1700)
+								canto = true;
+							if (!canto)
+								i += 100;
+							else if (canto && contCanto < 6)
+							{
+								j += 100;
+								contCanto++;
+							}
+							else
+							{
+								outroLado = true;
+								canto = false;
+								contCanto = 0;
+							}
 						}
 						else
 						{
-							outroLado = true;
-							canto = false;
-							contCanto = 0;
+							if (localInicial.x + i <= 200)		//Modificação, quando o caminho acaba, o drone volta pra base e recomeca o caminho
+							{
+								
+								devolverCarga = true;
+								estaColetanto = false;
+								i = cont;
+								j = cont;
+								canto = false;
+								outroLado = false;
+								contCanto = 0;
+								cont = cont + 20;
+							}
+							if (!canto)
+								i -= 100;
 						}
 					}
-					else
-					{
-						if (localInicial.x + i <= 200)
-						{
-							paraScout = true;
-						}
-						if (!canto)
-						{
-							i -= 100;
-						}
-					}
+					BWAPI::Position pos(localInicial.x + i, localInicial.y + j);
+					unit->move(pos);
+					//devolverCarga = true;
 				}
-				Broodwar->drawTextScreen(100, 50, "PORRA");
-				BWAPI::Position pos(localInicial.x + i, localInicial.y + j);
-				unit->move(pos);
-			}
 			}
 			if (!ReleaseMutex(util->ghMutex))
 			{

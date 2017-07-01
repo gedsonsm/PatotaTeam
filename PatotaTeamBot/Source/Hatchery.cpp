@@ -45,7 +45,7 @@ DWORD WINAPI Hatchery::run(LPVOID param){
 					}
 				}
 				//cria um drone se o num de drones está a baixo do min ou se ja tem o max de zerling ou se um drone foi usado para criar uma pool
-				else if ((util->qtdDrone < MIN_DRONES || (util->qtdZergling > MAX_ZERGLING && util->qtdDrone < MAX_DRONES) || util->substituiDrone) && util->qtdLarva > 0 && self->minerals() >= drone.mineralPrice())
+				else if ((util->qtdDrone < MAX_DRONES || (util->qtdZergling > MAX_ZERGLING && util->qtdDrone < MAX_DRONES) || util->substituiDrone) && util->qtdLarva > 0 && self->minerals() >= drone.mineralPrice())
 				{
 					hq->train(drone);
 					util->substituiDrone = false; // o drone já foi substituido
