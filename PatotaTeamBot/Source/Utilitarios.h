@@ -7,7 +7,7 @@ using namespace BWAPI;
 
 //Defines
 #define MIN_DRONES 2
-#define MAX_DRONES 5
+#define MAX_DRONES 4
 
 #define MAX_DEFENSORES 4
 #define MIN_ATACANTES 8

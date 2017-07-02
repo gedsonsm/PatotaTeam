@@ -60,7 +60,7 @@ DWORD WINAPI Hatchery::run(LPVOID param){
 				else if (self->incompleteUnitCount(UnitTypes::Zerg_Spawning_Pool) == 0) //se não tem uma pool
 				{
 					//verifica se tem recursos suficientes para construir uma pool
-					if (self->minerals() >= (spawningPool.mineralPrice() + drone.mineralPrice()) && !util->construirPool && !util->construindoPool)
+					if (self->minerals() >= (spawningPool.mineralPrice() /*+ drone.mineralPrice()*/) && !util->construirPool && !util->construindoPool)
 					{
 						util->construirPool = true; // dá a ordem para contruir uma pool(quem vai construir é um drone)
 					}

@@ -57,13 +57,24 @@ DWORD WINAPI GerenciadorAtaque::run(LPVOID param){
 			ReleaseMutex(util->ghMutex);
 			return 0; // end thread
 		} // end thread
-
-		if (!util->ataque && util->qtdZergling <= MIN_ATACANTES) {
-			ReleaseMutex(util->ghMutex);
-			Sleep(500);
-			continue;
+		if (BWAPI::Broodwar->enemy()->getRace() != BWAPI::Races::Enum::Zerg)
+		{
+			if (!util->ataque && util->qtdZergling <= MIN_ATACANTES)
+			{
+				ReleaseMutex(util->ghMutex);
+				Sleep(500);
+				continue;
+			}
 		}
-
+		else
+		{
+			if (!util->ataque && util->qtdZergling <= MIN_ATACANTES - 2)
+			{
+				ReleaseMutex(util->ghMutex);
+				Sleep(500);
+				continue;
+			}
+		}
 		if (dwWaitResult == WAIT_OBJECT_0 || dwWaitResult == WAIT_ABANDONED) //RAII
 		{
 			Unitset::iterator it = util->grupoAtaque.begin();

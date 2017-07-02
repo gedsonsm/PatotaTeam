@@ -60,7 +60,7 @@ DWORD WINAPI ZergDrone::run(LPVOID param){
 					unit->build(UnitTypes::Zerg_Spawning_Pool, localConstrucao);
 					util->construirPool = false;
 					util->construindoPool = true;
-					util->substituiDrone = true;
+					//util->substituiDrone = true;
 				}
 				ReleaseMutex(util->ghMutex); //libera o mutex, pois o drone vai deixar de existir
 				return 0;
@@ -87,7 +87,7 @@ DWORD WINAPI ZergDrone::run(LPVOID param){
 			}
 			else if (unit->isCarryingGas() || unit->isCarryingMinerals()) //se está carregando algo
 			{
-				Broodwar->drawTextScreen(100, 50, "THIRD");
+				//Broodwar->drawTextScreen(100, 50, "THIRD");
 				estaColetanto = false; //para de coletar
 				//Broodwar->drawTextScreen(100, 50, "22222");
 				if (!devolverCarga)  // devolve a carga

@@ -46,7 +46,7 @@ BWAPI::Unit GerenciadorColeta::getMineralField(BWAPI::Unit unit) {
 	int best_time = 999999;
 	int i = 0;
 	for each (BWAPI::Unit m in mineralList) {
-		if (!m->exists()) {
+		if (!m->exists() || !m->isTargetable()) {
 			i++;
 			continue;
 		}
