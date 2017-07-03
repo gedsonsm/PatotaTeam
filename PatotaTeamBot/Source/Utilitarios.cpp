@@ -156,7 +156,7 @@ bool compararPrioridade(Unit& u1, Unit& u2)
 
 std::list<BWAPI::Unit> Utilitarios::getListaAlvos() 
 {
-	const BWAPI::Unitset unidades = Broodwar->enemy()->getUnits(); //pega as unidades do enimigo
+	const BWAPI::Unitset unidades = Broodwar->enemy()->getUnits(); //pega as unidades do enimigo 
 	std::list<Unit> grupoInimigos;
 	for each (Unit u in unidades) // para cada unidade
 	{

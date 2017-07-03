@@ -68,7 +68,7 @@ DWORD WINAPI GerenciadorAtaque::run(LPVOID param){
 		}
 		else
 		{
-			if (!util->ataque && util->qtdZergling <= MIN_ATACANTES - 2)
+			if (!util->ataque && util->qtdZergling <= (MIN_ATACANTES - 4))
 			{
 				ReleaseMutex(util->ghMutex);
 				Sleep(500);
@@ -78,7 +78,7 @@ DWORD WINAPI GerenciadorAtaque::run(LPVOID param){
 		if (dwWaitResult == WAIT_OBJECT_0 || dwWaitResult == WAIT_ABANDONED) //RAII
 		{
 			Unitset::iterator it = util->grupoAtaque.begin();
-			while (it != util->grupoAtaque.end()) // limpa o grupo de atacantes das unidads que já morreram
+			while (it != util->grupoAtaque.end()) // limpa o grupo de atacantes das unidads que jÃ¡ morreram
 			{
 				if (!(*it)->exists()) 
 				{
@@ -96,9 +96,9 @@ DWORD WINAPI GerenciadorAtaque::run(LPVOID param){
 			} 
 			else 
 			{
-				util->ataque = true; // o ataque começa
+				util->ataque = true; // o ataque comeÃ§a
 				list = util->getListaAlvos(); //lega a lista de alvos
-				if (list.empty()) // se a lista estiver vazia, é pq a base nao é a inimiga
+				if (list.empty()) // se a lista estiver vazia, Ã© pq a base nao Ã© a inimiga
 				{
 					if (!andando && util->baseInimigo != (Position)self->getStartLocation()) // move-se para a base inimiga
 					{
@@ -106,7 +106,7 @@ DWORD WINAPI GerenciadorAtaque::run(LPVOID param){
 						andando = true;
 					}
 				}
-				else if (list != squad->ultimaListaAtaque && squad->listaSelecionavel(list)) // verifica se a lista de alvos não é a msm
+				else if (list != squad->ultimaListaAtaque && squad->listaSelecionavel(list)) // verifica se a lista de alvos nÃ£o Ã© a msm
 				{
 					andando = false;
 					squad->ultimaListaAtaque = list;
@@ -124,7 +124,7 @@ DWORD WINAPI GerenciadorAtaque::run(LPVOID param){
 							if ((*it3)->exists() && (*it3)->isTargetable()) 
 							{
 								int max = squad->mixAtaqueZerglings(*it3); //seleciona um numero minimo de zerglings para um tipo de inimigo
-								if (max == 0) //se não for SC, Drone Probe ou Larva ataca com toda a força
+								if (max == 0) //se nÃ£o for SC, Drone Probe ou Larva ataca com toda a forÃ§a
 								{
 									Unitset temp2;
 									temp2.insert(it2, util->grupoAtaque.end());
